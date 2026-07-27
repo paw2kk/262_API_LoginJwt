@@ -10,7 +10,8 @@ async function registerUser(req, res) {
 
         if (!email || !password) {
             return res.status(400).json({ message: 'Email and password are required.' });
-        
+        }
+
         const existingUser = await User.findOne({ where: { email } });
 
         if (existingUser) {
@@ -54,3 +55,5 @@ async function login(req, res) {
         return res.status(500).json({ message: error.message });
     }
 }
+
+module.exports = { registerUser, login };
