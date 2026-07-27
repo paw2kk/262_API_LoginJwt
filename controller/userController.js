@@ -25,3 +25,23 @@ async function registerUser(req, res) {
 
     } catch (err) {
         return res.status(500).json({ message: error.message });
+    }
+}
+
+async function login(req, res) {
+    try {
+        const { email, password } = req.body;
+
+        if (!email || !password) {
+            return res.status(400).json({ message: 'Email and password are required.' });
+        }
+
+        const user = await User.findOne({ where: { email } });
+
+        if (!user) {
+            return res.status(400).json({ message: 'Invalid email or password.' });
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        
